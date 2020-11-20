@@ -8,6 +8,7 @@ import (
 	"ginWeb/util"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"io/ioutil"
 	"strconv"
 )
 
@@ -54,7 +55,16 @@ func dolog() gin.HandlerFunc {
 		c.Writer = w
 		method := c.Request.Method
 		url := c.Request.RequestURI
-		logger.Info("=====客户端请求:", zap.String("方式method:", method), zap.String("路径url:", url))
+		if "GET" == method {
+			logger.Info("=====客户端请求:", zap.String("方式method:", method), zap.String("路径url:", url))
+		} else {
+			data, _ := c.GetRawData()
+			logger.Info("=====客户端请求:", zap.String("方式method:", method),
+				zap.String("路径url:", url),
+				zap.String("参数params:", string(data)),
+			)
+			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(data)) // 关键点
+		}
 		c.Next()
 		logger.Info("=====服务端返回数据:", zap.String("方式method:", method),
 			zap.String("路径url:", url), zap.String("数据data:", w.body.String()))
