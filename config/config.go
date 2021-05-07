@@ -21,7 +21,7 @@ type dbInfo struct {
 	Adress   string `yaml:"adress"`
 	Port     string `yaml:"port"`
 	Username string `yaml:"username"`
-	PassWord string `yaml:"passWord"`
+	PassWord string `yaml:"password"`
 	DbName   string `yaml:"dbName"`
 	Showsql  bool   `yaml:"showsql"`
 }

@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	SUCCESS = 1
+	SUCCESS = 200
 	FAILE   = -1
 )
 

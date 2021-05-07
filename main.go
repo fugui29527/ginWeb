@@ -4,8 +4,10 @@ import (
 	"bytes"
 	"fmt"
 	"ginWeb/config"
+	_ "ginWeb/dao"
 	"ginWeb/log"
 	"ginWeb/util"
+	"github.com/gin-contrib/pprof"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"io/ioutil"
@@ -15,18 +17,15 @@ import (
 var logger *zap.Logger
 
 func main() {
-	app := gin.Default()
+	app := gin.New()
+	pprof.Register(app)
+	app.Use(gin.Recovery())
 	app.Use(dolog())
 	//初始化日志
-	log.InitZapLog()
 	logger = log.Logger
 	//初始化路由
 	initRouter(app)
-	//初始化数据库连接
-	_, dbErr := util.CreateOrmDb()
-	if dbErr != nil {
-		logger.Error("===数据库初始化失败:====", zap.Any("error:", dbErr))
-	}
+
 	//初始化redis
 	util.CreateRedis()
 	logger.Debug("========服务器启动成功==========")

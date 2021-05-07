@@ -11,7 +11,7 @@ import (
 
 var Logger *zap.Logger
 
-func NewEncoderConfig() zapcore.EncoderConfig {
+func newEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
 		// Keys can be anything except the empty string.
 		TimeKey:        "T",
@@ -22,17 +22,21 @@ func NewEncoderConfig() zapcore.EncoderConfig {
 		StacktraceKey:  "S",
 		LineEnding:     zapcore.DefaultLineEnding,
 		EncodeLevel:    zapcore.CapitalLevelEncoder,
-		EncodeTime:     TimeEncoder,
+		EncodeTime:     timeEncoder,
 		EncodeDuration: zapcore.StringDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
 }
 
-func TimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
+func timeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
 	enc.AppendString(t.Format("2006-01-02 15:04:05.000"))
 }
 
-func InitZapLog() {
+func init() {
+	initZapLog()
+}
+
+func initZapLog() {
 	logConf := config.AppConfig.LogInfo
 
 	hook := lumberjack.Logger{
@@ -56,7 +60,7 @@ func InitZapLog() {
 	}
 	w := zapcore.AddSync(&hook)
 	core := zapcore.NewCore(
-		zapcore.NewConsoleEncoder(NewEncoderConfig()),
+		zapcore.NewConsoleEncoder(newEncoderConfig()),
 		zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout),
 			w),
 		level,
