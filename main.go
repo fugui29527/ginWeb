@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"ginWeb/config"
-	_ "ginWeb/dao"
+	_ "ginWeb/docs"
 	"ginWeb/log"
 	"ginWeb/util"
 	"github.com/gin-contrib/pprof"
@@ -16,11 +16,17 @@ import (
 
 var logger *zap.Logger
 
+// @title Swagger Example API
+// @version 0.0.1
+// @description  云e办后台管理系统
+// @BasePath /
 func main() {
 	app := gin.New()
 	pprof.Register(app)
 	app.Use(gin.Recovery())
 	app.Use(dolog())
+	//设置Validator提示中文
+	util.SetValidatorZH()
 	//初始化日志
 	logger = log.Logger
 	//初始化路由

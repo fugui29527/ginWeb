@@ -3,8 +3,6 @@ package controller
 import (
 	"ginWeb/dto"
 	"ginWeb/log"
-	"ginWeb/models"
-	"ginWeb/service"
 	"ginWeb/util"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -23,14 +21,8 @@ func init() {
 func (this *UserController) Register(c *gin.Context) {
 	userRegister := new(dto.UserRegister)
 	c.BindJSON(userRegister)
-	userservice := new(service.UserService)
-	u := models.CreateUserInfo(userRegister.Username, userRegister.PassWord, userRegister.Sex)
-	_, err := userservice.Insert(u)
-	if err != nil {
-		util.Faile(c, "注冊失敗")
-		return
-	}
-	util.Success(c, u)
+
+	util.SuccessNoData(c)
 }
 
 //登陆

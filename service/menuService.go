@@ -1,7 +1,6 @@
 package service
 
 import (
-	"ginWeb/dao"
 	"ginWeb/models"
 	"go.uber.org/zap"
 )
@@ -9,13 +8,13 @@ import (
 type MenuService struct {
 }
 
-var menudao *dao.MenuDao
+var menu *models.Menu
 var logger *zap.Logger
 
 func init() {
-	menudao = new(dao.MenuDao)
+	menu = new(models.Menu)
 }
 
 func (this *MenuService) FindMenuList() *[]models.Menu {
-	return menudao.FindMenuList()
+	return menu.FindMenuList()
 }

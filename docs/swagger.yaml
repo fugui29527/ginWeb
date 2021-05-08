@@ -1,0 +1,70 @@
+basePath: /
+definitions:
+  dto.LoginDto:
+    properties:
+      idKey:
+        example: IdKey
+        type: string
+      passWord:
+        example: 密码
+        type: string
+      username:
+        example: 用户名
+        type: string
+      vailCode:
+        example: 图形验证码
+        type: string
+    required:
+    - idKey
+    - passWord
+    - username
+    - vailCode
+    type: object
+info:
+  contact: {}
+  description: 云e办后台管理系统
+  title: Swagger Example API
+  version: 0.0.1
+paths:
+  /generateCode:
+    get:
+      consumes:
+      - application/json
+      description: 获取图形验证码
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+      summary: 获取图形验证码
+      tags:
+      - login
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: 登录接口
+      parameters:
+      - description: 请求参数
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: body
+        "999":
+          description: ""
+          schema:
+            type: string
+      summary: 登录接口
+      tags:
+      - login
+swagger: "2.0"

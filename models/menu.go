@@ -34,3 +34,11 @@ func CreateMenu(url string,
 		Enabled:     enabled,
 	}
 }
+
+var table_menu = "t_menu"
+
+func (this *Menu) FindMenuList() *[]Menu {
+	var menu []Menu
+	mEngine.Table(table_menu).Find(&menu)
+	return &menu
+}

@@ -6,19 +6,32 @@ import (
 )
 
 const (
-	SUCCESS = 200
-	FAILE   = -1
+	SUCCESS       int = 200
+	PARAM_FAILE   int = 201
+	CAPTCHA_FAILE int = 202
+	FAILE         int = 999
 )
 
 //返回结果信息
 type Response struct {
-	Code int         `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data"`
+	Code int         `json:"code" example:"状态码"`
+	Msg  string      `json:"msg" example:"信息"`
+	Data interface{} `json:"data" `
 }
 
 /**
-  成功返回
+b不带参数返回成功
+*/
+func SuccessNoData(c *gin.Context) {
+	result := &Response{
+		Code: SUCCESS,
+		Data: nil,
+	}
+	c.JSON(http.StatusOK, result)
+}
+
+/**
+  成功返回带参数
 */
 func Success(c *gin.Context, data interface{}) {
 	result := &Response{
@@ -44,7 +57,7 @@ func Faile(c *gin.Context, msg string) {
 */
 func FaileCode(c *gin.Context, code int, msg string) {
 	result := &Response{
-		Code: FAILE,
+		Code: code,
 		Msg:  msg,
 	}
 	c.JSON(http.StatusOK, result)
